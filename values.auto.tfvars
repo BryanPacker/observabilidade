@@ -1,0 +1,8 @@
+aws_region        = "us-east-1"
+vpc_id            = "vpc-06786ee7f7a163059"
+instance_name     = "bryan-observabilidade"
+instance_type     = "t3.small"
+sg_name           = "bryan-sg-observabilidade"
+subnet_name       = "bryan-subnet"
+cidr_block        = "172.30.56.0/24"
+availability_zone = "us-east-1a"
