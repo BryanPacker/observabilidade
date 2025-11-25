@@ -90,17 +90,17 @@ resource "aws_instance" "instance_Bryan" {
   key_name                    = aws_key_pair.bryan_key.key_name
   user_data                   = <<-EOF
               #!/bin/bash
-              sleep 10
+              sleep 20
               apt-get update
               apt-get install -y docker.io git
               systemctl start docker
               systemctl enable docker
               usermod -aG docker ubuntu
-              sleep 10
-
               curl -SL https://github.com/docker/compose/releases/download/v2.29.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
               ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
+              
+              sleep 10
               git clone https://github.com/BryanPacker/observabilidade.git /home/ubuntu/Aula-Observabilidade
               chown -R ubuntu:ubuntu /home/ubuntu/Aula-Observabilidade
               cd /home/ubuntu/Aula-Observabilidade
