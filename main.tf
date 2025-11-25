@@ -88,13 +88,16 @@ resource "aws_instance" "instance_Bryan" {
   subnet_id                   = aws_subnet.bryan_subnet.id
   associate_public_ip_address = true
   key_name                    = aws_key_pair.bryan_key.key_name
-  user_data = <<-EOF
+  user_data                   = <<-EOF
               #!/bin/bash
+              sleep 10
               apt-get update
               apt-get install -y docker.io git
               systemctl start docker
               systemctl enable docker
               usermod -aG docker ubuntu
+              sleep 10
+
               curl -SL https://github.com/docker/compose/releases/download/v2.29.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
               ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
