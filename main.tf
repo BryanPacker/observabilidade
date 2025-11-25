@@ -98,7 +98,7 @@ resource "aws_instance" "instance_Bryan" {
               curl -SL https://github.com/docker/compose/releases/download/v2.29.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
               ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
-              git clone https://github.com/Machado-tec/Aula-Observabilidade.git /home/ubuntu/Aula-Observabilidade
+              git clone https://github.com/BryanPacker/observabilidade.git /home/ubuntu/Aula-Observabilidade
               chown -R ubuntu:ubuntu /home/ubuntu/Aula-Observabilidade
               cd /home/ubuntu/Aula-Observabilidade
               docker-compose up -d
