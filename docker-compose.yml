@@ -53,14 +53,14 @@ services:
       - "3300:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=DevJunior
       - GF_USERS_ALLOW_SIGN_UP=false
     depends_on:
       - prometheus
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
-      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+DevJunior      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
 
 volumes:
   prometheus-data:

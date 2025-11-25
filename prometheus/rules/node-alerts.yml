@@ -9,3 +9,21 @@ groups:
         annotations:
           summary: Exporter indisponível
           description: Node Exporter não respondeu por mais de 2 minutos.
+
+      - alert: HostLoadCritical
+        expr: node_load1 > 4
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Carga do Host Elevada (Load 1m > 4)"
+          description: "O Load Average de 1 minuto está em {{ $value }} (acima do limite de 4.0) por 5 minutos."
+      
+      - alert: HostDiskIOCritical
+        expr: rate(node_disk_io_time_seconds_total[5m]) > 0.8
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disco I/O Saturado (Acima de 80%)"
+          description: "O disco está sendo utilizado mais de 80% do tempo (média de 5 minutos: {{ $value }})."
