@@ -224,6 +224,59 @@
       ],
       "title": "Latência de rede (ping)",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-ds"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 4 } ] }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+      "id": 7,
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "tooltip": { "mode": "single" }
+      },
+      "targets": [
+        { "expr": "node_load1", "legendFormat": "Load 1m", "refId": "A" },
+        { "expr": "node_load5", "legendFormat": "Load 5m", "refId": "B" },
+        { "expr": "node_load15", "legendFormat": "Load 15m", "refId": "C" }
+      ],
+      "title": "Carga do Sistema (Load Average)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-ds"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "unit": "pps",
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 10 } ] }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+      "id": 8,
+      "options": {
+        "legend": { "displayMode": "list", "placement": "bottom" },
+        "tooltip": { "mode": "single" }
+      },
+      "targets": [
+        {
+          "expr": "rate(node_netstat_Tcp_RetransSegs[1m])",
+          "legendFormat": "Retransmissões TCP/s",
+          "refId": "A"
+        }
+      ],
+      "title": "Retransmissões TCP (Rede)",
+      "type": "timeseries"
     }
   ],
   "refresh": "30s",
