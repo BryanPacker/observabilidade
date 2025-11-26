@@ -22,30 +22,6 @@ resource "aws_security_group" "bryan_sg" {
   name_prefix = "bryan-sg-"
   vpc_id      = var.vpc_id
   # Regra de entrada - HTTP
-  ingress {
-    from_port   = 9427
-    to_port     = 9427
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 3300
-    to_port     = 3300
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 9100
-    to_port     = 9100
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 9090
-    to_port     = 9090
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
   # Regra de entrada - SSH
   ingress {
     from_port   = 22
@@ -53,7 +29,18 @@ resource "aws_security_group" "bryan_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   # Regra de saída - Permite tudo
   egress {
     from_port   = 0
@@ -103,7 +90,7 @@ resource "aws_instance" "instance_Bryan" {
     sudo -u ubuntu git clone https://github.com/BryanPacker/observabilidade.git $PROJECT_DIR
     sudo -u ubuntu bash -c "cd $PROJECT_DIR && chmod +x nginxpasswrd.sh && ./nginxpasswrd.sh"
     chown -R ubuntu:ubuntu $PROJECT_DIR
-    sudo -u ubuntu bash -c "cd $PROJECT_DIR && docker-compose up -d"
+    sudo -u ubuntu bash -c "cd /home/ubuntu/Aula-Observabilidade && docker-compose -f docker-compose.yml -f docker-compose-override.yml up -d"
     EOF                             
               
   tags = {
