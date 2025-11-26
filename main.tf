@@ -90,7 +90,8 @@ resource "aws_instance" "instance_Bryan" {
     sudo -u ubuntu git clone https://github.com/BryanPacker/observabilidade.git $PROJECT_DIR
     sudo -u ubuntu bash -c "cd $PROJECT_DIR && chmod +x nginxpasswrd.sh && ./nginxpasswrd.sh"
     chown -R ubuntu:ubuntu $PROJECT_DIR
-    sudo -u ubuntu bash -c "cd /home/ubuntu/Aula-Observabilidade && docker-compose -f docker-compose.yml -f docker-compose-override.yml up -d"
+    sudo -u ubuntu bash -c "cd /home/ubuntu/Aula-Observabilidade && docker-compose -f docker-compose.yml -f docker-compose-override.yml up -d --build"
+    docker logs -f obs-load-generator
     EOF                             
               
   tags = {
