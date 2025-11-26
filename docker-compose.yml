@@ -60,6 +60,35 @@ services:
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
       - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
 
+  database:
+    image: postgres:13
+    container_name: obs-database
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: DevJunior
+      POSTGRES_DB: app_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432" 
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter
+    container_name: obs-postgres-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://admin:DevJunior@database:5432/app_db?sslmode=disable"
+    depends_on:
+      - database
+
+  load-generator:
+    build: ./load-generator
+    container_name: obs-load-generator
+    environment:
+      DB_HOST: database
+    depends_on:
+      - database
+
 volumes:
   prometheus-data:
   grafana-data:
+  db_data:
