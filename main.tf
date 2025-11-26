@@ -88,39 +88,24 @@ resource "aws_instance" "instance_Bryan" {
   subnet_id                   = aws_subnet.bryan_subnet.id
   associate_public_ip_address = true
   key_name                    = aws_key_pair.bryan_key.key_name
-  user_data                   = <<-EOF
-              #!/bin/bash
-              sleep 20
-              apt-get update
-              apt-get install -y docker.io git
-              systemctl start docker
-              systemctl enable docker
-              usermod -aG docker ubuntu
-              curl -SL https://github.com/docker/compose/releases/download/v2.29.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
-              chmod +x /usr/local/bin/docker-compose
-              ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
+  user_data = <<-EOF
+    #!/bin/bash
+    sleep 20
+    apt-get update
+    apt-get install -y docker.io git apache2-utils openssl
+    systemctl start docker
+    systemctl enable docker
+    usermod -aG docker ubuntu
+    curl -SL https://github.com/docker/compose/releases/download/v2.29.0/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+    ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
+    PROJECT_DIR="/home/ubuntu/Aula-Observabilidade"
+    sudo -u ubuntu git clone https://github.com/BryanPacker/observabilidade.git $PROJECT_DIR
+    sudo -u ubuntu bash -c "cd $PROJECT_DIR && chmod +x nginxpasswrd.sh && ./nginxpasswrd.sh"
+    chown -R ubuntu:ubuntu $PROJECT_DIR
+    sudo -u ubuntu bash -c "cd $PROJECT_DIR && docker-compose up -d"
+    EOF                             
               
-              sleep 10
-              git clone https://github.com/BryanPacker/observabilidade.git /home/ubuntu/Aula-Observabilidade
-              PROJECT_DIR="/home/ubuntu/Aula-Observabilidade"
-              mkdir -p $PROJECT_DIR/nginx/certs
-
-              # A. Gerar Certificado SSL Autoassinado (Para porta 443)
-              openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-              -keyout $PROJECT_DIR/nginx/certs/nginx.key \
-              -out $PROJECT_DIR/nginx/certs/nginx.crt \
-              -subj "/C=BR/ST=SC/L=Blumenau/O=DevOps/OU=IT/CN=observabilidade.local"
-
-              # B. Criar usuário e senha para o Basic Auth (admin / senhaforte)
-              # ALtere 'senhaforte' abaixo para a senha que você decidir.
-              htpasswd -bc $PROJECT_DIR/nginx/.htpasswd admin DevJunior
-
-              # 5. Ajustar permissões finais
-              chown -R ubuntu:ubuntu $PROJECT_DIR
-
-              # 6. Subir o stack completo (Incluindo Nginx via docker-compose.override.yml)
-              sudo -u ubuntu bash -c "cd $PROJECT_DIR && docker-compose up -d"
-              EOF
   tags = {
     Name = var.instance_name
   }
