@@ -10,3 +10,13 @@ providers:
     updateIntervalSeconds: 30
     options:
       path: /var/lib/grafana/dashboards
+
+  - name: 'db dashboards'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    options:
+      # Caminho interno do container onde os arquivos estão
+      path: /etc/grafana/provisioning/dashboards

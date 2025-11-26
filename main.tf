@@ -75,7 +75,7 @@ resource "aws_instance" "instance_Bryan" {
   subnet_id                   = aws_subnet.bryan_subnet.id
   associate_public_ip_address = true
   key_name                    = aws_key_pair.bryan_key.key_name
-  user_data = <<-EOF
+  user_data                   = <<-EOF
     #!/bin/bash
     sleep 20
     apt-get update
@@ -90,10 +90,12 @@ resource "aws_instance" "instance_Bryan" {
     sudo -u ubuntu git clone https://github.com/BryanPacker/observabilidade.git $PROJECT_DIR
     sudo -u ubuntu bash -c "cd $PROJECT_DIR && chmod +x nginxpasswrd.sh && ./nginxpasswrd.sh"
     chown -R ubuntu:ubuntu $PROJECT_DIR
+    curl -o $PROJECT_DIR/grafana/dashboards/node-exporter.json https://grafana.com/api/dashboards/1860/revisions/37/download
+    curl -o grafana/dashboards/postgres.json https://grafana.com/api/dashboards/455/revisions/2/download
     sudo -u ubuntu bash -c "cd /home/ubuntu/Aula-Observabilidade && docker-compose -f docker-compose.yml -f docker-compose-override.yml up -d --build"
     docker logs -f obs-load-generator
     EOF                             
-              
+
   tags = {
     Name = var.instance_name
   }
