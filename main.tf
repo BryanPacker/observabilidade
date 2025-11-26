@@ -79,7 +79,7 @@ resource "aws_instance" "instance_Bryan" {
     #!/bin/bash
     sleep 20
     apt-get update
-    apt-get install -y docker.io git apache2-utils openssl
+    apt-get install -y docker.io git apache2-utils openssl curl
     systemctl start docker
     systemctl enable docker
     usermod -aG docker ubuntu
@@ -90,10 +90,10 @@ resource "aws_instance" "instance_Bryan" {
     sudo -u ubuntu git clone https://github.com/BryanPacker/observabilidade.git $PROJECT_DIR
     sudo -u ubuntu bash -c "cd $PROJECT_DIR && chmod +x nginxpasswrd.sh && ./nginxpasswrd.sh"
     chown -R ubuntu:ubuntu $PROJECT_DIR
+    mkdir -p $PROJECT_DIR/grafana/dashboards
     curl -o $PROJECT_DIR/grafana/dashboards/node-exporter.json https://grafana.com/api/dashboards/1860/revisions/37/download
     curl -o $PROJECT_DIR/grafana/dashboards/postgres.json https://grafana.com/api/dashboards/455/revisions/2/download
     sudo -u ubuntu bash -c "cd /home/ubuntu/Aula-Observabilidade && docker-compose -f docker-compose.yml -f docker-compose-override.yml up -d --build"
-    docker logs -f obs-load-generator
     EOF                             
 
   tags = {
