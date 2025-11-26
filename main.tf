@@ -91,7 +91,7 @@ resource "aws_instance" "instance_Bryan" {
     sudo -u ubuntu bash -c "cd $PROJECT_DIR && chmod +x nginxpasswrd.sh && ./nginxpasswrd.sh"
     chown -R ubuntu:ubuntu $PROJECT_DIR
     curl -o $PROJECT_DIR/grafana/dashboards/node-exporter.json https://grafana.com/api/dashboards/1860/revisions/37/download
-    curl -o grafana/dashboards/postgres.json https://grafana.com/api/dashboards/455/revisions/2/download
+    curl -o $PROJECT_DIR/grafana/dashboards/postgres.json https://grafana.com/api/dashboards/455/revisions/2/download
     sudo -u ubuntu bash -c "cd /home/ubuntu/Aula-Observabilidade && docker-compose -f docker-compose.yml -f docker-compose-override.yml up -d --build"
     docker logs -f obs-load-generator
     EOF                             
