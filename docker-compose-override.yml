@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx_auth
+    restart: unless-stopped
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      # Montamos os volumes que serão criados via script user_data
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd:ro
+    depends_on:
+      - grafana

@@ -102,9 +102,24 @@ resource "aws_instance" "instance_Bryan" {
               
               sleep 10
               git clone https://github.com/BryanPacker/observabilidade.git /home/ubuntu/Aula-Observabilidade
-              chown -R ubuntu:ubuntu /home/ubuntu/Aula-Observabilidade
-              cd /home/ubuntu/Aula-Observabilidade
-              docker-compose up -d
+              PROJECT_DIR="/home/ubuntu/Aula-Observabilidade"
+              mkdir -p $PROJECT_DIR/nginx/certs
+
+              # A. Gerar Certificado SSL Autoassinado (Para porta 443)
+              openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+              -keyout $PROJECT_DIR/nginx/certs/nginx.key \
+              -out $PROJECT_DIR/nginx/certs/nginx.crt \
+              -subj "/C=BR/ST=SC/L=Blumenau/O=DevOps/OU=IT/CN=observabilidade.local"
+
+              # B. Criar usuário e senha para o Basic Auth (admin / senhaforte)
+              # ALtere 'senhaforte' abaixo para a senha que você decidir.
+              htpasswd -bc $PROJECT_DIR/nginx/.htpasswd admin DevJunior
+
+              # 5. Ajustar permissões finais
+              chown -R ubuntu:ubuntu $PROJECT_DIR
+
+              # 6. Subir o stack completo (Incluindo Nginx via docker-compose.override.yml)
+              sudo -u ubuntu bash -c "cd $PROJECT_DIR && docker-compose up -d"
               EOF
   tags = {
     Name = var.instance_name
