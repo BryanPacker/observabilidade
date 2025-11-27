@@ -92,7 +92,8 @@ resource "aws_instance" "instance_Bryan" {
     chown -R ubuntu:ubuntu $PROJECT_DIR
     mkdir -p $PROJECT_DIR/grafana/dashboards
     curl -o $PROJECT_DIR/grafana/dashboards/node-exporter.json https://grafana.com/api/dashboards/1860/revisions/37/download
-    curl -o $PROJECT_DIR/grafana/dashboards/postgres.json https://grafana.com/api/dashboards/455/revisions/2/download
+    curl -o $PROJECT_DIR/grafana/dashboards/postgres.json https://grafana.com/api/dashboards/9628/revisions/7/download
+    sed -i 's/${DS_PROMETHEUS}/Prometheus/g' $PROJECT_DIR/grafana/dashboards/postgres.json
     sudo -u ubuntu bash -c "cd /home/ubuntu/Aula-Observabilidade && docker-compose -f docker-compose.yml -f docker-compose-override.yml up -d --build"
     EOF                             
 
